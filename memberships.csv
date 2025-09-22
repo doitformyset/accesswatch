@@ -1,0 +1,5 @@
+source,group_name,member_name,member_type
+AD,Domain Admins,midcorp\\rita.patel,user
+AD,Domain Admins,midcorp\\john.smith,user
+AD,Help Desk,midcorp\\rita.patel,user
+LINUX,sudo,john.smith,user

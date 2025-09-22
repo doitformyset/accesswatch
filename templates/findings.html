@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8".>
+    <title>AccessWatch — Findings</title>
+    <style>
+        body { font: 14px system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 24px; }
+        h1 { margin: 0 0 16px 0; }
+        .stats { margin: 0 0 16px 0; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; } 
+        th { background-color: #f5f5f5; text-align: left; }
+        .badge { padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+        .sev-CRITICAL { background:#ffe3e3; color:#a40000; }
+        .sev-HIGH { background:#fff1cc; color:#8a5a00; }
+        .sev-MEDIUM { background:#e7f3ff; color:#004b84; }
+        .sev-LOW { background:#eef7ee; color:#215b2e; }
+        .pill { background:#eee; padding:1px 6px; border-radius: 10px; }
+        .toolbar { display:flex; gap:8px; margin-bottom:12px; }
+        .toolbar a { text-decoration:none; }
+        .muted { color:#666; }
+    </style>
+    </head>
+    <body>
+    <h1>AccessWatch — Findings</h1>
+    <div class="toolbar">
+        <a class="pill" href="/metrics">Metrics (JSON)</a>
+        <a class="pill" href="/findings.csv">Download CSV</a>
+
+        <form action="/ui/run-rules" method="post" style="display:inline;">
+            <button type="submit" class="pill">Run Rules</button>
+        </form>
+        <form action="/ui/reset-all" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to reset all findings?');">
+            <button type="submit" class="pill">Reset All</button>
+        </form>
+        <span class="muted">Updated: {{ updated_at }}</span>
+    </div>
+    <div class="stats">
+        <strong>Total:</strong> {{ findings|length }} &nbsp;&nbsp;
+        <strong>By severity:</strong>
+        {% for sev, count in by_severity.items() %} {{ sev }}={{ count }} {% endfor %}
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Rule</th>
+            <th>Severity</th>
+            <th>Entity</th>
+            <th>Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for f in findings %}
+        <tr>
+            <td>{{ f.id }}</td>
+            <td>{{ f.rule_id }}</td>
+            <td><span class="badge sev-{{ f.severity }}">{{ f.severity }}</span></td>
+            <td>{{ f.entity_type }}: {{ f.entity_name }}</td>
+            <td>
+            group={{ f.details.get('group') }},
+            evidence={{ f.details.get('evidence') }},
+            source={{ f.details.get('source') }}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </body>
+    </html>
+        
