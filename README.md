@@ -201,4 +201,3 @@ MIT License - see LICENSE file for details
 
 ---
 
-**A professional portfolio project built with FastAPI and SQLAlchemy.**
